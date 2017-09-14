@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+<TextView
+    android:id="@+id/cntrcv"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:text="이곳에 복사/붙여넣기를 해주십시오."
+    android:onClick="OnClick"
+    android:layout_weight="0.77" />
+
+<Button
+    android:id="@+id/nextBtn2"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:onClick="OnClick"
+    android:text="다음으로"/>
+
+    </LinearLayout>
+
+

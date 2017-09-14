@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.five.high.emirim.testintent.MainActivity"
+              android:background="#f2ebbf"
+              android:layout_centerInParent="true"
+    >
+
+    <ImageView
+        android:id="@+id/nextBtn1"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:onClick="onClick"
+        android:src="@drawable/calednaricon"
+        android:text="일정 추가하기"
+        android:layout_marginBottom="76dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/calBtn"
+        android:layout_alignStart="@+id/calBtn"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_weight="0"
+        android:gravity="center_horizontal"
+        android:src="@drawable/calendartxt"
+        android:layout_above="@+id/nextBtn1"
+        android:layout_alignLeft="@+id/nextBtn1"
+        android:layout_alignStart="@+id/nextBtn1"/>
+
+    <ImageView
+        android:id="@+id/calBtn"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:onClick="onClick"
+        android:layout_weight="1"
+        android:src="@drawable/calendarm"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="18dp"
+        android:layout_above="@+id/imageView"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:src="@drawable/seecalendar"
+        android:gravity="center_horizontal"
+        android:id="@+id/imageView4"
+        android:layout_above="@+id/calBtn"
+        android:layout_alignLeft="@+id/calBtn"
+        android:layout_alignStart="@+id/calBtn"
+        android:layout_marginBottom="13dp"/>
+</RelativeLayout>
