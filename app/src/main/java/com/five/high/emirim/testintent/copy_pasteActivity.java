@@ -2,19 +2,15 @@ package com.five.high.emirim.testintent;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FirstActivity extends Activity {
+public class copy_pasteActivity extends Activity {
     TextView copyedit;
     TextView textview;
 
@@ -31,7 +27,7 @@ public class FirstActivity extends Activity {
                                 copyText();
                                 break;
                         case R.id.nextBtn2:
-                        Intent intent = new Intent(FirstActivity.this, CalendarActivity.class);
+                        Intent intent = new Intent(copy_pasteActivity.this, NewcalendarActivity.class);
                         startActivity(intent);
                         Toast.makeText(this,"달력 화면으로 넘어갑니다.",Toast.LENGTH_LONG).show();
                         break;

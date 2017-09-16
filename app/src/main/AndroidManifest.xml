@@ -18,17 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".FirstActivity"/>
-        <activity android:name=".CalendarActivity"/>
-        <activity android:name=".SecondActivity"/>
-        <activity
-            android:name=".SettingActivity"
-            android:label="@string/title_activity_setting">
+        <activity android:name=".NewcalendarActivity">
         </activity>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".copy_pasteActivity"/>
+        <activity android:name=".SecondActivity"/>
         <activity android:name=".CaptureActivity">
         </activity>
-        <activity android:name=".NewCalendar">
+        <activity android:name=".PlusActivity">
         </activity>
     </application>
 

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1018876316098",
+    "firebase_url": "https://autocalendar-1e27b.firebaseio.com",
+    "project_id": "autocalendar-1e27b",
+    "storage_bucket": "autocalendar-1e27b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018876316098:android:e738e8ff323980a7",
+        "android_client_info": {
+          "package_name": "com.five.high.emirim.testintent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018876316098-td455olnr0erp08c941te2nf2ku1acdc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.five.high.emirim.testintent",
+            "certificate_hash": "a783b2df3d20a20de98a1aeb98baec2847c05acb"
+          }
+        },
+        {
+          "client_id": "1018876316098-irm6363m120rehtgiafpdmrl6311o5ue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1gnF4rXF24C6rpDZCvw3PL-eR9LyJWH0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018876316098-irm6363m120rehtgiafpdmrl6311o5ue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
