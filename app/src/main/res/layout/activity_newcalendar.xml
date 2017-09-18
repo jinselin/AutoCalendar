@@ -26,11 +26,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         />
 
+    <Button android:id="@+id/shareTempButton"
+            android:layout_weight="0"
+            android:onClick="onClick"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="문자공유테스트"></Button>
   <ListView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:id="@+id/listview">
 
   </ListView>
+
 
 </LinearLayout>

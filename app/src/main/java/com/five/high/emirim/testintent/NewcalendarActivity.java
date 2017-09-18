@@ -1,6 +1,8 @@
 package com.five.high.emirim.testintent;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.five.high.emirim.testintent.decorators.EventDecorator;
 import com.five.high.emirim.testintent.decorators.HighlightWeekendsDecorator;
@@ -32,7 +35,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class NewcalendarActivity extends AppCompatActivity implements OnDateSelectedListener {
+public class NewcalendarActivity extends AppCompatActivity implements OnDateSelectedListener, View.OnClickListener {
 
     private static final String TAG = "캘:NewcalAct";
     final String[] LIST_MENU = {"일정추가하기", "공유하기"} ;
@@ -50,7 +53,6 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
         setContentView(R.layout.activity_newcalendar);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU) ;
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         ListView listview = (ListView) findViewById(R.id.listview) ;
@@ -100,6 +102,24 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
 
     }
 
+    //// TODO: 2017-09-18 이거 왜 에러 떴는지 수정하기 각 화면으로 넘겨지는 것~!
+//
+//    @Override
+//    public void onItemClick(AdapterView<?> adapterView, View view,int i, long j){
+//      String c_list=LIST_MENU[Integer.parseInt("일정추가하기")];
+//        Intent intent = new Intent(NewcalendarActivity.this, PlusActivity.class);
+//        intent.putExtra("arr_text",c_list);
+//        new PlusActivity(intent);
+//    }
+//
+//    @Override
+//    public void onItemClick(AdapterView<?> adapterView, View view,int i, long j){
+//        String c_list=LIST_MENU[Integer.parseInt("공유하기")];
+//        Intent intent = new Intent(NewcalendarActivity.this,ShareActivity.class);
+//        intent.putExtra("arr_text",c_list);
+//        new PlusActivity(intent);
+//    }
+
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         //If you change a decorate, you need to invalidate decorators
@@ -131,6 +151,22 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
         mDatabase.child("events").addValueEventListener(postListener);
 
         return events;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.shareTempButton:
+                try {
+                    Uri uri = Uri.parse("smsto:"); //sms 문자와 관련된 Data는 'smsto:'로 시작. 이후는 문자를 받는 사람의 전화번호
+                    Intent i = new Intent(Intent.ACTION_SENDTO, uri); //시스템 액티비티인 SMS문자보내기 Activity의 action값
+                    i.putExtra("sms_body", "Hello...");  //보낼 문자내용을 추가로 전송, key값은 반드시 'sms_body'
+                    startActivity(i);//액티비티 실행
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "현재 기기에는 문자 보내는 기능이 없습니다. ^^;",Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     /**
@@ -176,4 +212,5 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
             mWidget.addDecorator(new EventDecorator(Color.RED, calendarDays));
         }
     }
+
 }
