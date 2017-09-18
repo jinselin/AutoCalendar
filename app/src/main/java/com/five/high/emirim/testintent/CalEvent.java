@@ -15,8 +15,13 @@ class CalEvent {
 
     }
 
-    public CalEvent(String name, String location){
+    public CalEvent(String name, String location) {
         this.name = name;
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return " " + name + " / " + location;
     }
 }
