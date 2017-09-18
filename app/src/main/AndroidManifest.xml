@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".IntroActivity">
+        </activity>
+        <activity android:name=".NewcalendarActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".NewcalendarActivity">
         </activity>
         <activity android:name=".MainActivity"/>
         <activity android:name=".copy_pasteActivity"/>
@@ -26,6 +26,8 @@
         <activity android:name=".CaptureActivity">
         </activity>
         <activity android:name=".PlusActivity">
+        </activity>
+        <activity android:name=".ShareActivity">
         </activity>
     </application>
 
