@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class PlusActivity extends AppCompatActivity implements View.OnClickListener {
+public class ModifyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG ="오캘:PlusActivity";
 

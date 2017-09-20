@@ -3,15 +3,15 @@ package com.five.high.emirim.testintent.decorators;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
+import com.five.high.emirim.testintent.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
-import com.five.high.emirim.testintent.R;
-
 /**
  * Use a custom selector
  */
+
 public class MySelectorDecorator implements DayViewDecorator {
 
     private final Drawable drawable;

@@ -10,8 +10,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,81 +59,96 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_newcalendar);
 
-        // Firebase DB 초기화
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        setContentView(R.layout.activity_newcalendar);
 
-        // 리스트에서 보여줄 어댑터 생성
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU) ;
+        Button goplusbtn=(Button)findViewById(R.id.goplustbtn);
+        goplusbtn.setOnClickListener(
+                new Button.OnClickListener() {
 
-        // 리스트
-        mListview = (ListView) findViewById(R.id.listview) ;
-        // 리스트에 어댑터 삽입
-        mListview.setAdapter(adapter) ;
-
-        // 리스트 안에 아이템 클릭시 동작 - SNS 공유하기
-        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                Toast.makeText(getApplicationContext(), "아이템 클릭~", Toast.LENGTH_SHORT).show();
-                // get TextView's Text.
-                String strText = (String) parent.getItemAtPosition(position) ;
-                // TODO : use strText
-            }
-        }) ;
-
-        // 리스트 안에 아이템 클릭시 동작 - 일정 수정/삭제하기 액티비티로 넘어가기
-        mListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "아이템 로옹~클릭~", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }) ;
-
-        // 마테리얼 칼렌더 레퍼런스 받아오기
-        mWidget = (MaterialCalendarView) findViewById(R.id.calendarView);
-        mTextView = (TextView) findViewById(R.id.textView);
-
-        // 날짜 클릭 감지, 처리하는 리스너
-        mWidget.setOnDateChangedListener(this);
-
-        // 전/후 월의 추가 날짜 보여주기
-        mWidget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
-
-        // 오늘 날짜 받아오기
-        Calendar instance = Calendar.getInstance();
-        // 캘린더에 오늘 날짜 선택
-        mWidget.setSelectedDate(instance.getTime());
-
-        // 캘린더 시작 년도, 월, 일 지정. 기본적으로 올해의 1월 1일
-        Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
-
-        // 캘린더의 끝 년도, 월, 일 지정. 기본적으로 올해의 12월 31일
-        Calendar instance2 = Calendar.getInstance();
-        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
-
-        // 캘린더 시작, 끝 날짜 지정
-        mWidget.state().edit()
-                .setMinimumDate(instance1.getTime())
-                .setMaximumDate(instance2.getTime())
-                .commit();
-
-        // 캘린더 장식하기]
-        mWidget.addDecorators(
-                new MySelectorDecorator(this),
-                new HighlightWeekendsDecorator(),
-                oneDayDecorator
+                    public void onClick(View v) {
+                        Intent intent = new Intent(NewcalendarActivity.this, PlusActivity.class);
+                        startActivity(intent);
+                    }
+                }
         );
 
-        // 캘린더에 일정을 읽어와서 표시해주는 코드!!(백그라운드로 동작)
-        //new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
+                        // Firebase DB 초기화
+                        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        testdo();
+                        // 리스트에서 보여줄 어댑터 생성
+                        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU);
 
-    }
+                        // 리스트
+                        mListview = (ListView) findViewById(R.id.listview);
+                        // 리스트에 어댑터 삽입
+                        mListview.setAdapter(adapter);
+
+                        // 리스트 안에 아이템 클릭시 동작 - SNS 공유하기
+                        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                                Toast.makeText(getApplicationContext(), "아이템 클릭~", Toast.LENGTH_SHORT).show();
+                                // get TextView's Text.
+                                String strText = (String) parent.getItemAtPosition(position);
+                                // TODO : use strText
+                            }
+                        });
+
+                        // 리스트 안에 아이템 클릭시 동작 - 일정 수정/삭제하기 액티비티로 넘어가기
+                        mListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Toast.makeText(getApplicationContext(), "아이템 로옹~클릭~", Toast.LENGTH_SHORT).show();
+                                return false;
+                            }
+                        });
+
+                        // 마테리얼 칼렌더 레퍼런스 받아오기
+                        mWidget = (MaterialCalendarView) findViewById(R.id.calendarView);
+                        //mTextView = (TextView) findViewById(R.id.textView);
+
+                        // 날짜 클릭 감지, 처리하는 리스너
+                        mWidget.setOnDateChangedListener(this);
+
+                        // 전/후 월의 추가 날짜 보여주기
+                        mWidget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+
+                        // 오늘 날짜 받아오기
+                        Calendar instance = Calendar.getInstance();
+                        // 캘린더에 오늘 날짜 선택
+                        mWidget.setSelectedDate(instance.getTime());
+
+                        // 캘린더 시작 년도, 월, 일 지정. 기본적으로 올해의 1월 1일
+                        Calendar instance1 = Calendar.getInstance();
+                        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
+
+                        // 캘린더의 끝 년도, 월, 일 지정. 기본적으로 올해의 12월 31일
+                        Calendar instance2 = Calendar.getInstance();
+                        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
+
+                        // 캘린더 시작, 끝 날짜 지정
+                        mWidget.state().edit()
+                                .setMinimumDate(instance1.getTime())
+                                .setMaximumDate(instance2.getTime())
+                                .commit();
+
+                        // 캘린더 장식하기]
+                        mWidget.addDecorators(
+                                new MySelectorDecorator(this),
+                                new HighlightWeekendsDecorator(),
+                                oneDayDecorator
+                        );
+
+                        // 캘린더에 일정을 읽어와서 표시해주는 코드!!(백그라운드로 동작)
+                        //new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
+
+                        testdo();
+
+                    }
 
     private void testdo() {
 
@@ -155,7 +172,7 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
                     Calendar calendar = Calendar.getInstance();
                     Log.e(TAG, "" + year + "." + mon + "." + day );
                     calendar.set(year,      // 년도
-                             mon - 1,   // 월 (1 빼야함)
+                             mon - 1,   // 월 (1 빼야함) kj
                                 day);      // 일
                     mEvents.add(CalendarDay.from(calendar));
                 }
@@ -176,7 +193,6 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     }
 
     // 마테리얼 캘린더에서 날짜 선택시 호출되는 코드
-    @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         //If you change a decorate, you need to invalidate decorators
         oneDayDecorator.setDate(date.getDate());

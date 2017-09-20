@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.five.high.emirim.testintent.PlusActivity"
-    android:weightSum="1">
+    tools:context="com.five.high.emirim.testintent.ModifyActivity"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text=" 날짜   "
-            android:inputType="date"
             android:layout_weight="0.1"
+            android:inputType="date"
+            android:text=" 날짜   "
+            android:textSize="15sp"
             />
 
         <EditText
+            android:id="@+id/eventdate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:hint="예) 2017.09.13"
             android:inputType="date"
-            android:ems="10"
-            android:id="@+id/eventdate"
             />
     </LinearLayout>
 
@@ -90,57 +89,5 @@
             android:id="@+id/eventname"
             android:layout_marginBottom="30dp"/>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#bbbec1"/>
-
-    <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_width="402dp"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/autocomplete"
-            android:layout_width="306dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="37dp"
-            android:layout_marginRight="37dp"
-            android:text="자동완성을 하시겠습니까?"
-            android:onClick="onClick"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#f2ebbf">
-
-        <EditText
-            android:layout_width="400dp"
-            android:layout_height="150dp"
-            android:hint="텍스트를 복사 붙여넣기 하십시오."
-            android:id="@+id/copypaste"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/scheduleadd"
-            android:layout_width="316dp"
-            android:layout_height="wrap_content"
-            android:text="일정추가하기"
-            android:layout_marginLeft="37dp"
-            android:layout_marginRight="37dp"
-            android:onClick="onClick"/>
-    </LinearLayout>
-
-
-
 
 </LinearLayout>
