@@ -12,18 +12,11 @@
     android:layout_centerInParent="true">
 
     <LinearLayout
-        android:layout_marginLeft="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:text="입력값 넣기"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_marginTop="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="수동으로 일정추가하기"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -110,27 +103,11 @@
             android:layout_marginBottom="30dp"/>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#bbbec1"/>
 
     <LinearLayout
-
         android:layout_marginTop="30dp"
         android:layout_width="402dp"
         android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/autocomplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="37dp"
-            android:layout_marginRight="37dp"
-            android:text="자동완성을 하시겠습니까?"
-            android:onClick="onClick"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -139,6 +116,7 @@
         android:background="#f2ebbf">
 
         <EditText
+            android:layout_marginLeft="28dp"
             android:layout_width="330dp"
             android:layout_height="150dp"
             android:hint="텍스트를 복사 붙여넣기 하십시오."
@@ -155,7 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="일정추가하기"
-            android:layout_marginLeft="37dp"
+            android:layout_marginLeft="140dp"
             android:layout_marginRight="37dp"
             android:onClick="onClick"/>
     </LinearLayout>

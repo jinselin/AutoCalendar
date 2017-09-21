@@ -142,13 +142,7 @@ public class PlusActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e(TAG, "에러발생!!");
                 }
                 break;
-            case R.id.autocomplete:
-                Log.e(TAG, "autocomplete 눌렸네" );
-                //name = mEventName.getText().toString();
-                Toast.makeText(this,"자동완성 버튼이 눌렸습니다.",Toast.LENGTH_SHORT).show();
-                // 2017091910
-                //CalEvent event = new CalEvent( name, location );
-                break;
+
         }
     }
 }

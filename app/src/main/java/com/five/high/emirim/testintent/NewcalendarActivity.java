@@ -100,6 +100,7 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
                             public void onItemClick(AdapterView parent, View v, int position, long id) {
                                 Uri uri = Uri.parse("smsto:");
                                 Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                                startActivity(intent);
                                 Toast.makeText(getApplicationContext(), mEventStrings.get(position), Toast.LENGTH_SHORT).show();
 
 
