@@ -170,12 +170,14 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                try{
                     mEventWithKeys.clear();
-                    for (DataSnapshot calEventSnapshot: dataSnapshot.getChildren()) {
-                        String key = calEventSnapshot.getKey();
-                        int year = Integer.parseInt(key.substring(0,4));
-                        int mon =Integer.parseInt(key.substring(4,6));
-                        int day = Integer.parseInt(key.substring(6,8));
-                        int hour = Integer.parseInt(key.substring(8,10));
+                for (DataSnapshot calEventSnapshot: dataSnapshot.getChildren()) {
+                    String key = calEventSnapshot.getKey();
+                    try {
+                        int year = Integer.parseInt(key.substring(0, 4));
+                        int mon = Integer.parseInt(key.substring(4, 6));
+                        int day = Integer.parseInt(key.substring(6, 8));
+                        int hour = Integer.parseInt(key.substring(8, 10));
+
                         Log.e(TAG, "가져온 키값들 : " + calEventSnapshot.getKey());
                         CalEvent event = calEventSnapshot.getValue(CalEvent.class);
                         Log.e(TAG, "가져온 일정들 : " + event.toString() );
@@ -183,11 +185,15 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
                         Calendar calendar = Calendar.getInstance();
                         Log.e(TAG, "" + year + "." + mon + "." + day );
                         calendar.set(year,      // 년도
-                                 mon - 1,   // 월 (1 빼야함) kj
-                                    day);      // 일
+                                mon - 1,   // 월 (1 빼야함) kj
+                                day);      // 일
                         mEvents.add(CalendarDay.from(calendar));
                         mEventWithKeys.add(new CalEventWithKey( event.name, event.location, key));
+                    }catch (Exception e){
+                        continue;
                     }
+
+                }
 
                     mWidget.addDecorator(new EventDecorator(Color.RED, mEvents));
                     if(mLastDate != null) {
