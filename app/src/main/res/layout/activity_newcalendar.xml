@@ -19,16 +19,6 @@
         />
 
 
-
-    <Button
-        android:id="@+id/shareTempButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:onClick="onClick"
-        android:text="문자 바로가기">
-    </Button>
-
     <!--<TextView-->
         <!--android:id="@+id/textView"-->
         <!--android:layout_width="wrap_content"-->
@@ -61,5 +51,12 @@
 
     </ListView>
 
+    <TextView
+        android:layout_marginLeft="52dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="10dp"
+        android:textColor="#b3b6bc"
+        android:text="짧게 누르면 공유가, 길게 누르면 일정이 삭제됩니다."/>
 
 </LinearLayout>

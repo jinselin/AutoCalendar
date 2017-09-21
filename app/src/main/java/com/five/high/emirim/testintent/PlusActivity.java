@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 
 
 public class PlusActivity extends AppCompatActivity implements View.OnClickListener {
+    private TextView mTextView;
 
     private static final String TAG ="오캘:PlusActivity";
 
@@ -37,6 +39,7 @@ public class PlusActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plus);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 

@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
+        android:layout_marginTop="70dp"
         android:text="입력값 넣기"
         android:orientation="horizontal">
     </LinearLayout>
@@ -118,7 +119,7 @@
         <EditText
             android:layout_marginLeft="28dp"
             android:layout_width="330dp"
-            android:layout_height="150dp"
+            android:layout_height="250dp"
             android:hint="텍스트를 복사 붙여넣기 하십시오."
             android:id="@+id/copypaste"
            />

@@ -36,9 +36,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class NewcalendarActivity extends AppCompatActivity implements OnDateSelectedListener, View.OnClickListener {
+public class NewcalendarActivity extends AppCompatActivity implements OnDateSelectedListener {
 
     private static final String TAG = "캘:NewcalAct";
+    TextView mtextview;
+
 
     // 테스트용 리스트 내용물
     final String[] LIST_MENU = {"일정추가하기", "공유하기"} ;
@@ -52,7 +54,6 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     // 마테리얼 칼렌더 장식용
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     // 마테리얼 칼랜더 밑에 출력되는 메시지
-    private TextView mTextView;
 
     // 마테리얼 칼랜더 밑에 있는 일정 목록
     private ListView mListview;
@@ -61,14 +62,13 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     private DatabaseReference mDatabase;
     private CalendarDay mLastDate;
 
+
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_newcalendar);
-
         setContentView(R.layout.activity_newcalendar);
 
         Button goplusbtn=(Button)findViewById(R.id.goplustbtn);
@@ -271,19 +271,4 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     }
 
     // 뭔가 클릭 시 처리하는 메소드
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.shareTempButton:
-                try {
-                    Uri uri = Uri.parse("smsto:"); //sms 문자와 관련된 Data는 'smsto:'로 시작. 이후는 문자를 받는 사람의 전화번호
-                    Intent i = new Intent(Intent.ACTION_SENDTO, uri); //시스템 액티비티인 SMS문자보내기 Activity의 action값
-                    i.putExtra("sms_body", " ");  //보낼 문자내용을 추가로 전송, key값은 반드시 'sms_body'
-                    startActivity(i);//액티비티 실행
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "현재 기기에는 문자 보내는 기능이 없습니다. ^^;",Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-    }
 }
