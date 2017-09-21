@@ -31,8 +31,10 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class NewcalendarActivity extends AppCompatActivity implements OnDateSelectedListener, View.OnClickListener {
 
@@ -40,6 +42,8 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
 
     // 테스트용 리스트 내용물
     final String[] LIST_MENU = {"일정추가하기", "공유하기"} ;
+    ArrayList<CalEventWithKey> mEventWithKeys = new ArrayList<>();
+    ArrayList<String> mEventStrings = new ArrayList<>();
     ArrayList<CalendarDay> mEvents;
 
     // 마테리얼 칼렌더
@@ -51,9 +55,10 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
 
     // 마테리얼 칼랜더 밑에 있는 일정 목록
     private ListView mListview;
-
+    private ArrayAdapter mAdapter;
     // Firebase Realtime DB
     private DatabaseReference mDatabase;
+    private CalendarDay mLastDate;
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -66,6 +71,8 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
         setContentView(R.layout.activity_newcalendar);
 
         Button goplusbtn=(Button)findViewById(R.id.goplustbtn);
+
+
         goplusbtn.setOnClickListener(
                 new Button.OnClickListener() {
 
@@ -80,21 +87,22 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
                         mDatabase = FirebaseDatabase.getInstance().getReference();
 
                         // 리스트에서 보여줄 어댑터 생성
-                        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU);
+                        mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mEventStrings);
 
                         // 리스트
                         mListview = (ListView) findViewById(R.id.listview);
                         // 리스트에 어댑터 삽입
-                        mListview.setAdapter(adapter);
+                        mListview.setAdapter(mAdapter);
 
                         // 리스트 안에 아이템 클릭시 동작 - SNS 공유하기
                         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                                Toast.makeText(getApplicationContext(), "아이템 클릭~", Toast.LENGTH_SHORT).show();
-                                // get TextView's Text.
-                                String strText = (String) parent.getItemAtPosition(position);
-                                // TODO : use strText
+                                Uri uri = Uri.parse("smsto:");
+                                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                                Toast.makeText(getApplicationContext(), mEventStrings.get(position), Toast.LENGTH_SHORT).show();
+
+
                             }
                         });
 
@@ -159,26 +167,41 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot calEventSnapshot: dataSnapshot.getChildren()) {
-                    String key = calEventSnapshot.getKey();
-                    int year = Integer.parseInt(key.substring(0,4));
-                    int mon =Integer.parseInt(key.substring(4,6));
-                    int day = Integer.parseInt(key.substring(6,8));
-                    int hour = Integer.parseInt(key.substring(8,10));
-                    Log.e(TAG, "가져온 키값들 : " + calEventSnapshot.getKey());
-                    CalEvent event = calEventSnapshot.getValue(CalEvent.class);
-                    Log.e(TAG, "가져온 일정들 : " + event.toString() );
+//                try{
+                    mEventWithKeys.clear();
+                    for (DataSnapshot calEventSnapshot: dataSnapshot.getChildren()) {
+                        String key = calEventSnapshot.getKey();
+                        int year = Integer.parseInt(key.substring(0,4));
+                        int mon =Integer.parseInt(key.substring(4,6));
+                        int day = Integer.parseInt(key.substring(6,8));
+                        int hour = Integer.parseInt(key.substring(8,10));
+                        Log.e(TAG, "가져온 키값들 : " + calEventSnapshot.getKey());
+                        CalEvent event = calEventSnapshot.getValue(CalEvent.class);
+                        Log.e(TAG, "가져온 일정들 : " + event.toString() );
 
-                    Calendar calendar = Calendar.getInstance();
-                    Log.e(TAG, "" + year + "." + mon + "." + day );
-                    calendar.set(year,      // 년도
-                             mon - 1,   // 월 (1 빼야함) kj
-                                day);      // 일
-                    mEvents.add(CalendarDay.from(calendar));
-                }
+                        Calendar calendar = Calendar.getInstance();
+                        Log.e(TAG, "" + year + "." + mon + "." + day );
+                        calendar.set(year,      // 년도
+                                 mon - 1,   // 월 (1 빼야함) kj
+                                    day);      // 일
+                        mEvents.add(CalendarDay.from(calendar));
+                        mEventWithKeys.add(new CalEventWithKey( event.name, event.location, key));
+                    }
 
-                mWidget.addDecorator(new EventDecorator(Color.RED, mEvents));
-                //Log.e(TAG, "으아아" + event.name + "/" + event.location);
+                    mWidget.addDecorator(new EventDecorator(Color.RED, mEvents));
+                    if(mLastDate != null) {
+                        renweTodayList(null);
+                    }else{
+                        Calendar instance = Calendar.getInstance();
+                        renweTodayList( CalendarDay.from(instance));
+                    }
+
+                    //Log.e(TAG, "으아아" + event.name + "/" + event.location);
+
+//                }catch (Exception e){
+//
+//                    Toast.makeText(getApplicationContext(), "파이어베이서 에러! 인터넷 에러?", Toast.LENGTH_SHORT).show();
+//                }
             }
 
             @Override
@@ -195,9 +218,32 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     // 마테리얼 캘린더에서 날짜 선택시 호출되는 코드
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         //If you change a decorate, you need to invalidate decorators
+        mLastDate = date;
         oneDayDecorator.setDate(date.getDate());
+        renweTodayList(date);
         widget.invalidateDecorators();
 
+    }
+
+    public void renweTodayList( CalendarDay date){
+        if(date == null){
+            date = mLastDate;
+        }
+
+        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd", Locale.KOREA );
+        String today = mSimpleDateFormat.format ( date.getDate() );
+        Log.e(TAG, "오늘은 : " + today);
+        mEventStrings.clear();
+        for( CalEventWithKey c : mEventWithKeys){
+            String d = c.key.substring(0, 8);
+            Log.e(TAG, "비교날짜" + d);
+            String t = c.key.substring(8,10);
+            Log.e(TAG, "시간" + t);
+            if( today.equals(d) ){
+                mEventStrings.add(  t + "시 : " + c.name + " in " + c.location );
+            }
+        }
+        mAdapter.notifyDataSetInvalidated();
     }
 
     // 뭔가 클릭 시 처리하는 메소드

@@ -8,13 +8,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.five.high.emirim.testintent.PlusActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:layout_centerInParent="true">
 
     <LinearLayout
+        android:layout_marginLeft="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="수동으로 일정추가하기"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,14 +43,15 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="예) 2017.09.13"
-            android:inputType="date"
+            android:hint="예) 20170913"
+            android:inputType="number"
             android:ems="10"
             android:id="@+id/eventdate"
             />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
@@ -47,14 +64,15 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="예) 17시"
-            android:inputType="time"
+            android:hint="예) 17"
+            android:inputType="numberDecimal"
             android:ems="5"
             android:id="@+id/eventtime"
             />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
@@ -73,6 +91,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
@@ -86,7 +105,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="예) 가족들과 식사"
-            android:ems="15"
+            android:ems="12"
             android:id="@+id/eventname"
             android:layout_marginBottom="30dp"/>
     </LinearLayout>
@@ -98,13 +117,14 @@
         android:background="#bbbec1"/>
 
     <LinearLayout
+
         android:layout_marginTop="30dp"
         android:layout_width="402dp"
         android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/autocomplete"
-            android:layout_width="306dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="37dp"
             android:layout_marginRight="37dp"
@@ -119,11 +139,11 @@
         android:background="#f2ebbf">
 
         <EditText
-            android:layout_width="400dp"
+            android:layout_width="330dp"
             android:layout_height="150dp"
             android:hint="텍스트를 복사 붙여넣기 하십시오."
-            android:id="@+id/copypaste"/>
-
+            android:id="@+id/copypaste"
+           />
     </LinearLayout>
 
     <LinearLayout
@@ -132,15 +152,12 @@
 
         <Button
             android:id="@+id/scheduleadd"
-            android:layout_width="316dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="일정추가하기"
             android:layout_marginLeft="37dp"
             android:layout_marginRight="37dp"
             android:onClick="onClick"/>
     </LinearLayout>
-
-
-
 
 </LinearLayout>
