@@ -44,6 +44,7 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
     final String[] LIST_MENU = {"일정추가하기", "공유하기"} ;
     ArrayList<CalEventWithKey> mEventWithKeys = new ArrayList<>();
     ArrayList<String> mEventStrings = new ArrayList<>();
+    ArrayList<CalEventWithKey> mEventSelectedDay = new ArrayList<>();
     ArrayList<CalendarDay> mEvents;
 
     // 마테리얼 칼렌더
@@ -83,81 +84,95 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
                 }
         );
 
-                        // Firebase DB 초기화
-                        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Firebase DB 초기화
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-                        // 리스트에서 보여줄 어댑터 생성
-                        mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mEventStrings);
+        // 리스트에서 보여줄 어댑터 생성
+        mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mEventStrings);
 
-                        // 리스트
-                        mListview = (ListView) findViewById(R.id.listview);
-                        // 리스트에 어댑터 삽입
-                        mListview.setAdapter(mAdapter);
+        // 리스트
+        mListview = (ListView) findViewById(R.id.listview);
+        // 리스트에 어댑터 삽입
+        mListview.setAdapter(mAdapter);
 
-                        // 리스트 안에 아이템 클릭시 동작 - SNS 공유하기
-                        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                                Uri uri = Uri.parse("smsto:");
-                                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-                                startActivity(intent);
-                                Toast.makeText(getApplicationContext(), mEventStrings.get(position), Toast.LENGTH_SHORT).show();
+        // 리스트 안에 아이템 클릭시 동작 - SNS 공유하기
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                try {
+                    Uri uri = Uri.parse("smsto:");
+                    Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                    CalEventWithKey c = mEventSelectedDay.get(position);
+                    String key = c.key;
+                    String year = key.substring(0, 4);
+                    String mon = key.substring(4, 6);
+                    String day = key.substring(6, 8);
+                    String hour = key.substring(8, 10);
+                    String msg = year + "년 " + mon + "월 " + day + "일 " + hour + "시 " + c.location + "에서 " + c.name + "!!!";
+                    intent.putExtra("sms_body", msg);  //보낼 문자내용을 추가로 전송, key값은 반드시 'sms_body'
+                    startActivity(intent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "문자를 보낼 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
+        // 리스트 안에 아이템 클릭시 동작 - 일정 수정/삭제하기 액티비티로 넘어가기
+        mListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                                Intent intent= new Intent(NewcalendarActivity.this, ModifyActivity.class);
+//                                intent.putExtra("key", mEventSelectedDay.get(position).key);
+//                                startActivity(intent);
+                mDatabase.child("events/" + mEventSelectedDay.get(position).key).removeValue();
+                Toast.makeText(getApplicationContext(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
-                            }
-                        });
+        // 마테리얼 칼렌더 레퍼런스 받아오기
+        mWidget = (MaterialCalendarView) findViewById(R.id.calendarView);
+        //mTextView = (TextView) findViewById(R.id.textView);
 
-                        // 리스트 안에 아이템 클릭시 동작 - 일정 수정/삭제하기 액티비티로 넘어가기
-                        mListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                            @Override
-                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Toast.makeText(getApplicationContext(), "아이템 로옹~클릭~", Toast.LENGTH_SHORT).show();
-                                return false;
-                            }
-                        });
+        // 날짜 클릭 감지, 처리하는 리스너
+        mWidget.setOnDateChangedListener(this);
 
-                        // 마테리얼 칼렌더 레퍼런스 받아오기
-                        mWidget = (MaterialCalendarView) findViewById(R.id.calendarView);
-                        //mTextView = (TextView) findViewById(R.id.textView);
+        // 전/후 월의 추가 날짜 보여주기
+        mWidget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
-                        // 날짜 클릭 감지, 처리하는 리스너
-                        mWidget.setOnDateChangedListener(this);
+        // 오늘 날짜 받아오기
+        Calendar instance = Calendar.getInstance();
+        // 캘린더에 오늘 날짜 선택
+        mWidget.setSelectedDate(instance.getTime());
 
-                        // 전/후 월의 추가 날짜 보여주기
-                        mWidget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        // 캘린더 시작 년도, 월, 일 지정. 기본적으로 올해의 1월 1일
+        Calendar instance1 = Calendar.getInstance();
+        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
 
-                        // 오늘 날짜 받아오기
-                        Calendar instance = Calendar.getInstance();
-                        // 캘린더에 오늘 날짜 선택
-                        mWidget.setSelectedDate(instance.getTime());
+        // 캘린더의 끝 년도, 월, 일 지정. 기본적으로 올해의 12월 31일
+        Calendar instance2 = Calendar.getInstance();
+        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
 
-                        // 캘린더 시작 년도, 월, 일 지정. 기본적으로 올해의 1월 1일
-                        Calendar instance1 = Calendar.getInstance();
-                        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
+        // 캘린더 시작, 끝 날짜 지정
+        mWidget.state().edit()
+                .setMinimumDate(instance1.getTime())
+                .setMaximumDate(instance2.getTime())
+                .commit();
 
-                        // 캘린더의 끝 년도, 월, 일 지정. 기본적으로 올해의 12월 31일
-                        Calendar instance2 = Calendar.getInstance();
-                        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
+        // 캘린더 장식하기]
+        mWidget.addDecorators(
+                new MySelectorDecorator(this),
+                new HighlightWeekendsDecorator(),
+                oneDayDecorator
+        );
 
-                        // 캘린더 시작, 끝 날짜 지정
-                        mWidget.state().edit()
-                                .setMinimumDate(instance1.getTime())
-                                .setMaximumDate(instance2.getTime())
-                                .commit();
+        // 캘린더에 일정을 읽어와서 표시해주는 코드!!(백그라운드로 동작)
+        //new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
 
-                        // 캘린더 장식하기]
-                        mWidget.addDecorators(
-                                new MySelectorDecorator(this),
-                                new HighlightWeekendsDecorator(),
-                                oneDayDecorator
-                        );
+        testdo();
 
-                        // 캘린더에 일정을 읽어와서 표시해주는 코드!!(백그라운드로 동작)
-                        //new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
-
-                        testdo();
-
-                    }
+    }
 
     private void testdo() {
 
@@ -169,7 +184,8 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                try{
-                    mEventWithKeys.clear();
+                mEventWithKeys.clear();
+                mEventSelectedDay.clear();
                 for (DataSnapshot calEventSnapshot: dataSnapshot.getChildren()) {
                     String key = calEventSnapshot.getKey();
                     try {
@@ -195,15 +211,15 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
 
                 }
 
-                    mWidget.addDecorator(new EventDecorator(Color.RED, mEvents));
-                    if(mLastDate != null) {
-                        renweTodayList(null);
-                    }else{
-                        Calendar instance = Calendar.getInstance();
-                        renweTodayList( CalendarDay.from(instance));
-                    }
+                mWidget.addDecorator(new EventDecorator(Color.RED, mEvents));
+                if(mLastDate != null) {
+                    renweTodayList(null);
+                }else{
+                    Calendar instance = Calendar.getInstance();
+                    renweTodayList( CalendarDay.from(instance));
+                }
 
-                    //Log.e(TAG, "으아아" + event.name + "/" + event.location);
+                //Log.e(TAG, "으아아" + event.name + "/" + event.location);
 
 //                }catch (Exception e){
 //
@@ -248,6 +264,7 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
             Log.e(TAG, "시간" + t);
             if( today.equals(d) ){
                 mEventStrings.add(  t + "시 : " + c.name + " in " + c.location );
+                mEventSelectedDay.add(c);
             }
         }
         mAdapter.notifyDataSetInvalidated();
@@ -261,7 +278,7 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
                 try {
                     Uri uri = Uri.parse("smsto:"); //sms 문자와 관련된 Data는 'smsto:'로 시작. 이후는 문자를 받는 사람의 전화번호
                     Intent i = new Intent(Intent.ACTION_SENDTO, uri); //시스템 액티비티인 SMS문자보내기 Activity의 action값
-                    i.putExtra("sms_body", "Hello...");  //보낼 문자내용을 추가로 전송, key값은 반드시 'sms_body'
+                    i.putExtra("sms_body", " ");  //보낼 문자내용을 추가로 전송, key값은 반드시 'sms_body'
                     startActivity(i);//액티비티 실행
                 }catch (Exception e){
                     Toast.makeText(getApplicationContext(), "현재 기기에는 문자 보내는 기능이 없습니다. ^^;",Toast.LENGTH_SHORT).show();

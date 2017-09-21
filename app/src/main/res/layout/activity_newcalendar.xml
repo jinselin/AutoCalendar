@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:onClick="onClick"
-        android:text="문자공유테스트">
+        android:text="문자 바로가기">
     </Button>
 
     <!--<TextView-->
