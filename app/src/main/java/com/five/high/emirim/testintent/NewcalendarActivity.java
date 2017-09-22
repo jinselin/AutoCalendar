@@ -85,6 +85,7 @@ public class NewcalendarActivity extends AppCompatActivity implements OnDateSele
         );
 
         // Firebase DB 초기화
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // 리스트에서 보여줄 어댑터 생성
